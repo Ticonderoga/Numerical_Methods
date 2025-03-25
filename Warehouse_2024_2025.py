@@ -22,14 +22,20 @@ def dist_tot(x,y) :
     dC = dist_pt(x, y, C)
     return dA+dB+dC
 
+def vec_dist_tot(X) :
+    x = X[0]
+    y = X[1]
+    return dist_tot(x, y)
+
+
 if __name__ == '__main__':
+    
+    # définition des points
     A = (0,0)
     B = (300,400)
     C = (700,300)
-    P = (200,200)
-    dtot = dist_tot(P[0], P[1])
-    print("Distance totale : ",dtot)
-    
+        
+    # Tracé du graphique
     plt.close('all')
     plt.figure()
     
@@ -41,23 +47,23 @@ if __name__ == '__main__':
     plt.contourf(X,Y,Dtot,100,cmap='jet')
     plt.colorbar()
 
-    
-    
-    plt.scatter(A[0],A[1],c='k')
+    factories = np.array([A,B,C])
+    plt.plot(factories[:,0],factories[:,1],'kh', 
+             markersize=12)
     offset = 20
     plt.annotate("A", (A[0]+offset,A[1]+offset))
-
-    plt.scatter(B[0],B[1],c='k')
     plt.annotate("B", (B[0],B[1]+offset))
-
-    plt.scatter(C[0],C[1],c='k')
     plt.annotate("C", (C[0]+offset,C[1]))
     
+    plt.axis([0,800,0,500])
     
-    
-    plt.axis('equal')
-    
-    
+    # Optimisation
+    P = (200,200)
+    xinit, yinit = P  
+    Popt=scopt.fmin(vec_dist_tot,
+                    [xinit,yinit],
+                    full_output=True,
+                    retall=True)
     
     
     

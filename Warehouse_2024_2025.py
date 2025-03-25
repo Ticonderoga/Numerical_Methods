@@ -27,6 +27,24 @@ def vec_dist_tot(X) :
     y = X[1]
     return dist_tot(x, y)
 
+def grad_dist(x,y) :
+    xA,yA = A
+    xB,yB = B
+    xC,yC = C
+    dA = dist_pt(x, y, A)
+    dB = dist_pt(x, y, B)
+    dC = dist_pt(x, y, C)
+    
+    dfdx = (x-xA)/dA + (x-xB)/dB + (x-xC)/dC
+    dfdy = (y-yA)/dA + (y-yB)/dB + (y-yC)/dC
+
+    return [dfdx,dfdy]
+
+def vec_grad_dist(X) : 
+    x = X[0]
+    y = X[1]
+    return grad_dist(x, y)
+
 
 if __name__ == '__main__':
     
@@ -65,6 +83,7 @@ if __name__ == '__main__':
     plt.axis([0,800,0,500])
     
     # Optimisation with simplex method
+    print("SIMPLEX")
     Pinit = (200,200)
     Popt=scopt.fmin(vec_dist_tot,
                     Pinit,
@@ -75,7 +94,25 @@ if __name__ == '__main__':
     positions=np.array(allvecs)
     plt.plot(positions[:,0],positions[:,1],'wo-',mec='k',label='Simplex')
     plt.legend()
-    print(tabulate(positions, disable_numparse=True,floatfmt='5g',tablefmt='pipe',headers=("x","y")))
+    print(tabulate(positions, disable_numparse=True,
+                   floatfmt='5g',tablefmt='pipe',headers=("x","y")))
+    
+    # Optimisation with Newton method
+    print('NEWTON')
+    Pinit = (200,200)
+    Popt=scopt.fmin_ncg(vec_dist_tot,
+                    Pinit,
+                    full_output=True,
+                    retall=True)
+    
+    xopt,fopt,niter,funcalls,warn,allvecs=Popt
+    positions=np.array(allvecs)
+    plt.plot(positions[:,0],positions[:,1],'bo-',mec='k',label='Newton')
+    plt.legend()
+    print(tabulate(positions, disable_numparse=True,
+                   floatfmt='5g',tablefmt='pipe',headers=("x","y")))
+    
+    
 
     plt.tight_layout()
     

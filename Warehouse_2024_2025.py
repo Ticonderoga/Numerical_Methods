@@ -99,15 +99,16 @@ if __name__ == '__main__':
     
     # Optimisation with Newton method
     print('NEWTON')
-    Pinit = (200,200)
+    Pinit = (200.,200.)
     Popt=scopt.fmin_ncg(vec_dist_tot,
-                    Pinit,
-                    full_output=True,
-                    retall=True)
+                        Pinit,
+                        vec_grad_dist, 
+                        full_output=True,
+                        retall=True)
     
-    xopt,fopt,niter,funcalls,warn,allvecs=Popt
+    xopt,fopt,niter,funcalls,gcalls,warn,allvecs=Popt
     positions=np.array(allvecs)
-    plt.plot(positions[:,0],positions[:,1],'bo-',mec='k',label='Newton')
+    plt.plot(positions[:,0],positions[:,1],'go-',mec='k',label='Newton')
     plt.legend()
     print(tabulate(positions, disable_numparse=True,
                    floatfmt='5g',tablefmt='pipe',headers=("x","y")))

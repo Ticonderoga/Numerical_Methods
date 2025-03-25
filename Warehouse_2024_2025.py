@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     factories = np.array([A,B,C])
     plt.plot(factories[:,0],factories[:,1],'kh', 
-             markersize=12)
+             mec='k',mfc='w',markersize=12)
     offset = 20
     plt.annotate("A", (A[0]+offset,A[1]+offset))
     plt.annotate("B", (B[0],B[1]+offset))
@@ -57,14 +57,19 @@ if __name__ == '__main__':
     
     plt.axis([0,800,0,500])
     
-    # Optimisation
-    P = (200,200)
-    xinit, yinit = P  
+    # Optimisation with simplex method
+    Pinit = (200,200)
     Popt=scopt.fmin(vec_dist_tot,
-                    [xinit,yinit],
+                    Pinit,
                     full_output=True,
                     retall=True)
     
+    xopt,fopt,niter,funcalls,warn,allvecs=Popt
+    positions=np.array(allvecs)
+    plt.plot(positions[:,0],positions[:,1],'wo-',mec='k',label='Simplex')
+    plt.legend()
+    print(tabulate(positions, disable_numparse=True,floatfmt='5g',tablefmt='pipe',headers=("x","y")))
+
     
     
     

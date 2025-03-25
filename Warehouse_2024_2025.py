@@ -51,9 +51,16 @@ if __name__ == '__main__':
     plt.plot(factories[:,0],factories[:,1],'kh', 
              mec='k',mfc='w',markersize=12)
     offset = 20
-    plt.annotate("A", (A[0]+offset,A[1]+offset))
-    plt.annotate("B", (B[0],B[1]+offset))
-    plt.annotate("C", (C[0]+offset,C[1]))
+    plt.annotate("A", xy = A, 
+                 xytext=(A[0]+offset,A[1]+offset),
+                 arrowprops=dict(facecolor='black',arrowstyle="->",))
+    plt.annotate("B", xy = B, 
+                 xytext=(B[0],B[1]+offset),
+                 arrowprops=dict(facecolor='black',arrowstyle="->",))
+    
+    plt.annotate("C", xy = C,
+                 xytext = (C[0]+offset,C[1]),
+                 arrowprops=dict(facecolor='black',arrowstyle="->",))
     
     plt.axis([0,800,0,500])
     
@@ -70,7 +77,7 @@ if __name__ == '__main__':
     plt.legend()
     print(tabulate(positions, disable_numparse=True,floatfmt='5g',tablefmt='pipe',headers=("x","y")))
 
-    
+    plt.tight_layout()
     
     
     

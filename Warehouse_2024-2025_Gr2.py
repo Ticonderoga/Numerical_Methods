@@ -29,9 +29,14 @@ if __name__ == '__main__':
     B = (300,400)
     C = (700,300)
     
+    x = np.linspace(-50,750,101)
+    y = np.linspace(-50,550,126)
+    X,Y = np.meshgrid(x,y)
     
-    
-    
-    
-    
+    plt.contourf(X,Y,dist_tot(X, Y),100)
+    plt.colorbar()
+    plt.contour(X,Y,dist_tot(X, Y),20,colors='w')
+    plt.annotate('A', A)
+    plt.annotate('B', B)
+    plt.annotate('C', C)
     

@@ -21,7 +21,10 @@ def dist_tot(x,y) :
     dB = dist_point(x, y, B)
     dC = dist_point(x, y, C)
     return dA+dB+dC
-    
+
+def vec_dist_tot(V) :
+    return dist_tot(V[0], V[1])
+
 def grad_dist(x,y):
     xA, yA = A
     xB, yB = B
@@ -34,6 +37,9 @@ def grad_dist(x,y):
     deriv_x = (x-xA)/dA + (x-xB)/dB + (x-xC)/dC
     deriv_y = (y-yA)/dA + (y-yB)/dB + (y-yC)/dC
     return [deriv_x, deriv_y]
+
+def vec_grad_dist(V) :
+    return np.array(grad_dist(V[0], V[1]))
     
     
 if __name__ == '__main__':
@@ -52,4 +58,8 @@ if __name__ == '__main__':
     plt.annotate('A', A, size=18, color ='w')
     plt.annotate('B', B, size=18, color ='w')
     plt.annotate('C', C, size=18, color ='w')
+    xinit = np.array([650,300])
+    Res = scopt.fmin_ncg(vec_dist_tot, xinit, fprime = vec_grad_dist,
+                         full_output=1, disp=1, retall=1)
+    
     

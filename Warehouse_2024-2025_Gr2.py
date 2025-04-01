@@ -36,7 +36,7 @@ if __name__ == '__main__':
     plt.contourf(X,Y,dist_tot(X, Y),100)
     plt.colorbar()
     plt.contour(X,Y,dist_tot(X, Y),20,colors='w')
-    plt.annotate('A', A)
-    plt.annotate('B', B)
-    plt.annotate('C', C)
+    plt.annotate('A', A, size=18, color ='w')
+    plt.annotate('B', B, size=18, color ='w')
+    plt.annotate('C', C, size=18 , color ='w')
     

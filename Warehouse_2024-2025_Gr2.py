@@ -22,7 +22,20 @@ def dist_tot(x,y) :
     dC = dist_point(x, y, C)
     return dA+dB+dC
     
-
+def grad_dist(x,y):
+    xA, yA = A
+    xB, yB = B
+    xC, yC = C
+    
+    dA = dist_point(x, y, A)
+    dB = dist_point(x, y, B)
+    dC = dist_point(x, y, C)
+    
+    deriv_x = (x-xA)/dA + (x-xB)/dB + (x-xC)/dC
+    deriv_y = (y-yA)/dA + (y-yB)/dB + (y-yC)/dC
+    return [deriv_x, deriv_y]
+    
+    
 if __name__ == '__main__':
     plt.close('all')
     A = (0,0)
@@ -38,5 +51,5 @@ if __name__ == '__main__':
     plt.contour(X,Y,dist_tot(X, Y),20,colors='w')
     plt.annotate('A', A, size=18, color ='w')
     plt.annotate('B', B, size=18, color ='w')
-    plt.annotate('C', C, size=18 , color ='w')
+    plt.annotate('C', C, size=18, color ='w')
     

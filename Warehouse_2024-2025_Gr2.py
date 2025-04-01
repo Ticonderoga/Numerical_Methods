@@ -58,8 +58,27 @@ if __name__ == '__main__':
     plt.annotate('A', A, size=18, color ='w')
     plt.annotate('B', B, size=18, color ='w')
     plt.annotate('C', C, size=18, color ='w')
+    
     xinit = np.array([650.,300.])
+    # Simplex
+    Res_sx = scopt.fmin(vec_dist_tot,xinit,full_output=1,retall=1)
+    xopt_sx, fopt_sx, niter_sx, fcalls_sx, warn_sx, allvecs_sx = Res_sx
+    positions_sx=np.array(allvecs_sx)
+    plt.plot(positions_sx[:,0],positions_sx[:,1],'go-',label='Simplex')
+    
+    # Newton
     Res = scopt.fmin_ncg(vec_dist_tot, xinit, fprime = vec_grad_dist,
                          full_output=1, disp=1, retall=1)
+    xopt, fopt, fcalls, gcalls, hcalls, warns, allvecs = Res
+    positions=np.array(allvecs)
+    plt.plot(positions[:,0],positions[:,1],'wo-',label='Newton')
+    
+    plt.legend()
+    
+    
+    
+    
+    
+
     
     

@@ -61,6 +61,7 @@ def build_Matrix(df,mat,M) :
     # df = deepcopy(dfin)
     # mat = deepcopy(matin)
     df = df.copy(deep=True)
+    M = M.copy()
     
     add_rhs = np.zeros_like(M[0])
     
@@ -283,6 +284,7 @@ def build_Matrix(df,mat,M) :
     return Ms, add_rhs
 
 def update_rhs(df,rhs,ti) :
+    rhs = rhs.copy()
     df = df.copy(deep=True)
     indices_left_cv = np.argwhere(~np.isnan(df.hext.to_numpy())).flatten()
     rhs[indices_left_cv] = rhs_base[indices_left_cv] * Tinf_sin(ti, Tbase_ext, DT_Text, P_ext)
@@ -353,9 +355,9 @@ def temp_vs_time(time,stockT,pos) :
     fig, ax = plt.subplots(layout='constrained')
     ax.set_title('Temperature vs time at position : '+str(pos))
     ax.set_ylabel('T [°C]')
-    ax.set_xlabel('time [min]')
+    ax.set_xlabel('time [h]')
     
-    ax.plot(time/60,stockT[pos,:])
+    ax.plot(time/3600,stockT[pos,:])
     ax.grid(True)
 
 if __name__ == '__main__' :
@@ -375,23 +377,23 @@ if __name__ == '__main__' :
 
     # Parameters
     dt = 10             # timestep
-    tf = 24*3600        # final time
+    tf = 5*24*3600      # final time
     Text = -10          # Ext. Temperature
     Tint = 25           # Int. Temperature
     Tinit = 25          # Init Temperature
     hint = 10           # Internal Heat transfer coefficient
     hext = 20           # External Heat transfer coefficient
     Tbase_ext = 0 
-    DT_Text = 20 
+    DT_Text = 10 
     P_ext = 24 * 3600
     
     # Build the matrix and the rhs_base vector
-    Text = 1
+    Text = 1            # WARNING - Do not change
     Ms, rhs_base = build_Matrix(data,Materials,Mstruct)
-    # print(rhs_base)
+    
     
     # update add_rhs with a real Text
-    Text = Tinf_sin(0, Tbase_ext, DT_Text , P_ext)
+    # Text_init = Tinf_sin(0, Tbase_ext, DT_Text , P_ext)
     add_rhs = update_rhs(data, rhs_base, 0)
     
     # Initial Temperature vector
@@ -413,4 +415,4 @@ if __name__ == '__main__' :
     contour_temp(data, saveT, 60)
     temp_vs_time(savetime,saveT,95) 
   
-
+    plt.plot(savetime/3600,Tinf_sin(savetime,Tbase_ext,DT_Text,P_ext))

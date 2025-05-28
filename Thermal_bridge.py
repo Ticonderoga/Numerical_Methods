@@ -338,7 +338,7 @@ if __name__ == '__main__' :
     # Parameters
     dt = 10             # timestep
     tf = 24*3600        # final time
-    Text = -10           # Ext. Temperature
+    Text = -10          # Ext. Temperature
     Tint = 25           # Int. Temperature
     Tinit = 25          # Init Temperature
     hint = 10           # Internal Heat transfer coefficient
@@ -353,15 +353,15 @@ if __name__ == '__main__' :
     saveT = T
     savetime = np.array([0])
     
-    for i in range(0,tf+1,dt) :
+    for ti in range(0,tf+1,dt) :
         T = scsp.linalg.spsolve(Ms, T + add_rhs)
-        if i>0 and (i % 300 == 0):
+        if ti>0 and (ti % 300 == 0):
             saveT = np.c_[saveT, T]
-            savetime = np.r_[savetime, i*dt]
+            savetime = np.r_[savetime, ti]
             print("Time (s) : ",savetime[-1])
     
     # Graphs
-    contour_temp(data, saveT, -1)
+    contour_temp(data, saveT, 60)
     temp_vs_time(savetime,saveT,95) 
   
 

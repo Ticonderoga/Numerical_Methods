@@ -357,7 +357,8 @@ def temp_vs_time(time,stockT,pos) :
     ax.set_ylabel('T [°C]')
     ax.set_xlabel('time [h]')
     
-    ax.plot(time/3600,stockT[pos,:])
+    ax.plot(time/3600,stockT[pos,:],label='Temperature at position : '+str(pos))
+    plt.legend()    
     ax.grid(True)
 
 if __name__ == '__main__' :
@@ -378,14 +379,14 @@ if __name__ == '__main__' :
     # Parameters
     dt = 10             # timestep
     tf = 5*24*3600      # final time
-    Text = -10          # Ext. Temperature
-    Tint = 25           # Int. Temperature
-    Tinit = 25          # Init Temperature
+    dtsave = 300        # time step for saving results
+    Tint = 20           # Int. Temperature
+    Tinit = 20          # Init Temperature
     hint = 10           # Internal Heat transfer coefficient
     hext = 20           # External Heat transfer coefficient
-    Tbase_ext = 0 
-    DT_Text = 10 
-    P_ext = 24 * 3600
+    Tbase_ext = -5      # Mean Temperature outside
+    DT_Text = 4         # Variation of the outside Temp. i.e. Tbase_ext +/- DT_Text
+    P_ext = 24 * 3600   # Period in second
     
     # Build the matrix and the rhs_base vector
     Text = 1            # WARNING - Do not change
@@ -403,10 +404,11 @@ if __name__ == '__main__' :
     LU = scsp.linalg.splu(Ms)
     for ti in range(0,tf+1,dt) :
         # Build the matrix and the add_rhs vector
+        
         add_rhs = update_rhs(data, rhs_base, ti)
         
         T = LU.solve(T + add_rhs)
-        if ti>0 and (ti % 300 == 0):
+        if ti>0 and (ti % dtsave == 0):
             saveT = np.c_[saveT, T]
             savetime = np.r_[savetime, ti]
             print("Time (s) : ",savetime[-1])
@@ -414,5 +416,6 @@ if __name__ == '__main__' :
     # Graphs
     contour_temp(data, saveT, 60)
     temp_vs_time(savetime,saveT,95) 
-  
-    plt.plot(savetime/3600,Tinf_sin(savetime,Tbase_ext,DT_Text,P_ext))
+    plt.figure(2)
+    plt.plot(savetime/3600,Tinf_sin(savetime,Tbase_ext,DT_Text,P_ext),label=r'$T_\infty \left( t \right)$')
+    plt.legend()
